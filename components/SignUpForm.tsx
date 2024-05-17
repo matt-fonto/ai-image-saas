@@ -5,6 +5,7 @@ import { useFormErrors } from "@/hooks/useFormError";
 import { cn } from "@/lib/utils";
 import { SignUpSchema, SignUpType } from "@/schemas/SignUpSchema";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { useRef } from "react";
 import { useFormState } from "react-dom";
 import { FcGoogle } from "react-icons/fc";
@@ -42,9 +43,7 @@ export function SignUpForm({ className }: ContactFormProps) {
 
     formAction(data);
 
-    if (state === "success") {
-      ref.current?.reset();
-    }
+    redirect("/login");
   }
 
   return (
