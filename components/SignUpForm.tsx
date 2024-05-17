@@ -7,6 +7,7 @@ import { SignUpSchema, SignUpType } from "@/schemas/SignUpSchema";
 import Link from "next/link";
 import { useRef } from "react";
 import { useFormState } from "react-dom";
+import { FcGoogle } from "react-icons/fc";
 
 type ContactFormProps = {
   className?: string;
@@ -147,6 +148,18 @@ export function SignUpForm({ className }: ContactFormProps) {
         >
           Sign Up
         </button>
+
+        <div className="mx-auto my-4 flex w-full items-center justify-evenly before:mr-4 before:block before:h-px before:flex-grow before:bg-stone-400 after:ml-4 after:block after:h-px after:flex-grow after:bg-stone-400">
+          or
+        </div>
+
+        <Link
+          href={"/api/auth/signin/google"}
+          className="flex items-center justify-center w-full bg-white border gap-x-2 border-gray-300 rounded-md py-2 text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          <FcGoogle className="text-2xl" />
+          Sign up with Google
+        </Link>
 
         <div className="text-center text-sm text-gray-600">
           <p>
