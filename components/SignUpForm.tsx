@@ -10,19 +10,9 @@ import { useFormState } from "react-dom";
 
 type ContactFormProps = {
   className?: string;
-  propertyTitle?: string;
-  propertyLink?: string;
-  source?: string;
 };
 
-const TIMER_RESET_ERRORS = 4000;
-
-export function SignUpForm({
-  source,
-  className,
-  propertyLink,
-  propertyTitle,
-}: ContactFormProps) {
+export function SignUpForm({ className }: ContactFormProps) {
   const [state, formAction] = useFormState(createUser, null);
   const { errors, setFieldError, resetErrorsAfterDelay } = useFormErrors([
     "name",
