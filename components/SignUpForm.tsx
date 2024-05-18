@@ -17,8 +17,10 @@ type ContactFormProps = {
 export function SignUpForm({ className }: ContactFormProps) {
   const [state, formAction] = useFormState(createUser, null);
   const { errors, setFieldError, resetErrorsAfterDelay } = useFormErrors([
-    "name",
+    "username",
     "email",
+    "password",
+    "confirmPassword",
   ]);
   const ref = useRef<HTMLFormElement>(null);
 
@@ -74,7 +76,6 @@ export function SignUpForm({ className }: ContactFormProps) {
             type="text"
             name="username"
             id="username"
-            required
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
           />
           {errors.username && (
@@ -94,7 +95,6 @@ export function SignUpForm({ className }: ContactFormProps) {
             type="email"
             name="email"
             id="email"
-            required
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
           />
           {errors.email && (
@@ -114,9 +114,11 @@ export function SignUpForm({ className }: ContactFormProps) {
             type="password"
             name="password"
             id="password"
-            required
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
           />
+          {errors.password && (
+            <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+          )}
         </div>
 
         {/* Confirm Password */}
@@ -131,7 +133,6 @@ export function SignUpForm({ className }: ContactFormProps) {
             type="password"
             name="confirmPassword"
             id="confirmPassword"
-            required
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
           />
           {errors.confirmPassword && (

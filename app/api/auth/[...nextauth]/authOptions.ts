@@ -18,29 +18,29 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: {
-          label: "Email",
-          type: "email",
-          placeholder: "john@mail.com",
+        login: {
+          label: "Username or email",
+          type: "text",
+          placeholder: "john_doe or john@mail.com",
         },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials.password) {
-          return null;
+        if (!credentials?.login || !credentials.password) {
+          throw new Error("Missing credentials");
         }
 
-        // check the user in the database
+        const isEmail = credentials.login.includes("@");
+
+        // check the user in the database by email or username
         const user = await db.user.findUnique({
-          where: {
-            email: credentials.email,
-          },
+          where: isEmail
+            ? { email: credentials.login }
+            : { username: credentials.login },
         });
 
-        console.log("user", user);
-
         if (!user) {
-          return null;
+          throw new Error("No user found with the provided credentials");
         }
 
         const passwordMatch = await compare(
@@ -63,21 +63,19 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
+        token.id = user.id;
         token.username = user.username;
+        token.email = user.email;
       }
-
-      console.log("user", user);
 
       return token;
     },
     async session({ session, token }) {
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          username: token.username, //we get the username from the token and add it to the session
-        },
-      };
+      session.user.id = String(token.id);
+      session.user.email = token.email;
+      session.user.username = String(token.username);
+
+      return session;
     },
   },
 };

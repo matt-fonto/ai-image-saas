@@ -3,8 +3,11 @@
 import { useFormErrors } from "@/hooks/useFormError";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useRef } from "react";
+import { FormEvent, useRef } from "react";
 import { FcGoogle } from "react-icons/fc";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { LoginSchema } from "@/schemas/LoginSchema";
 
 type ContactFormProps = {
   className?: string;
@@ -12,10 +15,43 @@ type ContactFormProps = {
 
 export function LoginForm({ className }: ContactFormProps) {
   const { errors, setFieldError, resetErrorsAfterDelay } = useFormErrors([
-    "name",
-    "email",
+    "login",
+    "password",
   ]);
   const ref = useRef<HTMLFormElement>(null);
+  const router = useRouter();
+
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (ref.current) {
+      const formData = new FormData(ref.current);
+      const login = formData.get("login");
+      const password = formData.get("password");
+
+      const { error, data } = LoginSchema.safeParse({
+        login: String(login),
+        password: String(password),
+      });
+
+      if (error) {
+        error.issues.forEach((issue) => setFieldError(issue));
+        resetErrorsAfterDelay();
+      }
+
+      if (!data) {
+        return;
+      }
+
+      await signIn("credentials", {
+        login,
+        password,
+        redirect: false,
+      });
+
+      router.push("/dashboard");
+    }
+  };
 
   return (
     <div
@@ -28,8 +64,8 @@ export function LoginForm({ className }: ContactFormProps) {
         id="login-form"
         method="POST"
         className="w-full max-w-md bg-white rounded-lg shadow-lg p-8 space-y-6"
-        // action={clientAction}
         ref={ref}
+        onSubmit={onSubmit}
       >
         <h2 className="text-2xl font-semibold text-center">Login</h2>
 
@@ -45,7 +81,6 @@ export function LoginForm({ className }: ContactFormProps) {
             type="text"
             name="login"
             id="login"
-            required
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
           />
           {errors.login && (
@@ -65,7 +100,6 @@ export function LoginForm({ className }: ContactFormProps) {
             type="password"
             name="password"
             id="password"
-            required
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
           />
           {errors.password && (
