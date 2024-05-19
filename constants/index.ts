@@ -3,41 +3,49 @@ export const navLinks = [
     label: "Home",
     route: "/",
     icon: "/assets/icons/home.svg",
+    isAdministrative: false,
   },
   {
     label: "Image Restore",
     route: "/transformations/add/restore",
     icon: "/assets/icons/image.svg",
+    isAdministrative: false,
   },
   {
     label: "Generative Fill",
     route: "/transformations/add/fill",
     icon: "/assets/icons/stars.svg",
+    isAdministrative: false,
   },
   {
     label: "Object Remove",
     route: "/transformations/add/remove",
     icon: "/assets/icons/scan.svg",
+    isAdministrative: false,
   },
   {
     label: "Object Recolor",
     route: "/transformations/add/recolor",
     icon: "/assets/icons/filter.svg",
+    isAdministrative: false,
   },
   {
     label: "Background Remove",
     route: "/transformations/add/removeBackground",
     icon: "/assets/icons/camera.svg",
+    isAdministrative: false,
   },
   {
     label: "Profile",
     route: "/profile",
     icon: "/assets/icons/profile.svg",
+    isAdministrative: true,
   },
   {
     label: "Buy Credits",
     route: "/credits",
     icon: "/assets/icons/bag.svg",
+    isAdministrative: true,
   },
 ];
 

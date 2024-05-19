@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/providers/AuthProvider";
-import { cn } from "@/lib/cn";
+import { cn } from "@/lib/utils";
 
 const IBMPlex = IBM_Plex_Sans({
   subsets: ["latin"],

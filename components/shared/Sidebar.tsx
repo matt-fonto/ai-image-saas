@@ -1,10 +1,13 @@
 "use client";
 import { navLinks } from "@/constants";
-import { cn } from "@/lib/cn";
+import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Button } from "../ui/button";
+import { SignOutBtn } from "../SignOutButton";
+import App from "next/app";
 
 export function Sidebar() {
   const session = useSession();
@@ -23,34 +26,79 @@ export function Sidebar() {
         </Link>
 
         <nav className="sidebar-nav">
-          {session && (
-            <ul className="sidebar-nav_elements">
-              {navLinks.map((link) => {
-                const isActive = link.route === pathname;
+          {session.status === "authenticated" ? (
+            <>
+              <ul className="sidebar-nav_elements">
+                {navLinks
+                  .filter(({ isAdministrative }) => !isAdministrative)
+                  .map(({ icon, label, route }) => {
+                    const isActive = route === pathname;
+                    return (
+                      <li
+                        key={route}
+                        className={cn(
+                          "sidebar-nav_element group text-gray-600",
+                          {
+                            "bg-purple-gradient text-white": isActive,
+                          }
+                        )}
+                      >
+                        <Link href={route} className="sidebar-link">
+                          <Image
+                            src={icon}
+                            alt="logo"
+                            width={24}
+                            height={24}
+                            className={cn({
+                              isActive: "brightness-200",
+                            })}
+                          />
+                          {label}
+                        </Link>
+                      </li>
+                    );
+                  })}
+              </ul>
 
-                return (
-                  <li
-                    key={link.route}
-                    className={cn("sidebar-nav_element group text-gray-600", {
-                      "bg-purple-gradient text-white": isActive,
-                    })}
-                  >
-                    <Link href={link.route} className="sidebar-link">
-                      <Image
-                        src={link.icon}
-                        alt="logo"
-                        width={24}
-                        height={24}
-                        className={cn({
-                          isActive: "brightness-200",
-                        })}
-                      />
-                      {link.label}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
+              <ul className="sidebar-nav_elements">
+                {navLinks
+                  .filter(({ isAdministrative }) => isAdministrative)
+                  .map(({ icon, label, route }) => {
+                    const isActive = route === pathname;
+                    return (
+                      <li
+                        key={route}
+                        className={cn(
+                          "sidebar-nav_element group text-gray-600",
+                          {
+                            "bg-purple-gradient text-white": isActive,
+                          }
+                        )}
+                      >
+                        <Link href={route} className="sidebar-link">
+                          <Image
+                            src={icon}
+                            alt="logo"
+                            width={24}
+                            height={24}
+                            className={cn({
+                              isActive: "brightness-200",
+                            })}
+                          />
+                          {label}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                <li className="sidebar-nav_element group text-gray-600 bg-red-100 rounded-md py-2">
+                  <SignOutBtn />
+                </li>
+              </ul>
+            </>
+          ) : (
+            <Button asChild className="button bg-purple-gradient bg-cover">
+              <Link href="/login">Login</Link>
+            </Button>
           )}
         </nav>
       </div>
