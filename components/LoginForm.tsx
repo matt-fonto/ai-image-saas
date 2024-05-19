@@ -1,13 +1,13 @@
 "use client";
 
 import { useFormErrors } from "@/hooks/useFormError";
-import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { FormEvent, useRef } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { LoginSchema } from "@/schemas/LoginSchema";
+import { cn } from "@/lib/cn";
 
 type ContactFormProps = {
   className?: string;

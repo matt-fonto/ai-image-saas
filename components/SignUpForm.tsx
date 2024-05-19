@@ -2,7 +2,7 @@
 
 import { createUser } from "@/actions/createUser";
 import { useFormErrors } from "@/hooks/useFormError";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/cn";
 import { SignUpSchema, SignUpType } from "@/schemas/SignUpSchema";
 import Link from "next/link";
 import { redirect } from "next/navigation";
