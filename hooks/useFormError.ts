@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { ZodIssue } from "zod";
 
-const TIMER_RESET_ERRORS = 4000;
+const TIMER_RESET_ERRORS_IN_SECONDS = 4;
 
 type ErrorType = { [key: string]: string | null };
 
-export function useFormErrors(fields: string[]) {
+export function useFormErrors(
+  fields: string[],
+  timeToReset: number = TIMER_RESET_ERRORS_IN_SECONDS
+) {
   const initalErrors = fields.reduce((acc, field) => {
     acc[field] = null;
     return acc;
@@ -28,7 +31,7 @@ export function useFormErrors(fields: string[]) {
   function resetErrorsAfterDelay() {
     setTimeout(() => {
       cleanErrors();
-    }, TIMER_RESET_ERRORS);
+    }, timeToReset * 1000);
   }
 
   return { errors, setFieldError, cleanErrors, resetErrorsAfterDelay };

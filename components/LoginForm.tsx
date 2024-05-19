@@ -14,10 +14,10 @@ type ContactFormProps = {
 };
 
 export function LoginForm({ className }: ContactFormProps) {
-  const { errors, setFieldError, resetErrorsAfterDelay } = useFormErrors([
-    "login",
-    "password",
-  ]);
+  const { errors, setFieldError, resetErrorsAfterDelay } = useFormErrors(
+    ["login", "password"],
+    10
+  );
   const ref = useRef<HTMLFormElement>(null);
   const router = useRouter();
 
@@ -27,6 +27,8 @@ export function LoginForm({ className }: ContactFormProps) {
     if (ref.current) {
       const formData = new FormData(ref.current);
       const login = formData.get("login");
+      console.log("login", login);
+
       const password = formData.get("password");
 
       const { error, data } = LoginSchema.safeParse({
@@ -49,7 +51,7 @@ export function LoginForm({ className }: ContactFormProps) {
         redirect: false,
       });
 
-      router.push("/dashboard");
+      router.push("/");
     }
   };
 
