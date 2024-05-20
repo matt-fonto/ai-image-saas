@@ -20,4 +20,45 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  images Image[]
+  photo String?
+  firstName String?
+  lastName String?
+  planId Int?
+  creditBalance Int?
+  transactions Transaction[]
+}
+
+model Image {
+  id Int @id @default(autoincrement())
+  title    String 
+  transformationType String
+  publicId String
+  secureUrl String
+  width Int?
+  height Int?
+  config Json?
+  transformationUrl String?
+  aspectRatio String?
+  color String?
+  prompt String?
+  authorId Int
+  author User @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("images") // This is the name of the table in the database
+}
+
+model Transaction {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  stripeId String @unique
+  amount Int
+  plan String?
+  credits Int?
+  buyerId Int
+  buyer  User @relation(fields: [buyerId], references: [id])
+
+  @@map("transactions") 
 }
