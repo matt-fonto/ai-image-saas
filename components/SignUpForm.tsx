@@ -1,9 +1,9 @@
 "use client";
 
-import { createUser } from "@/actions/createUser";
+import { createUser } from "@/actions/user.actions";
 import { useFormErrors } from "@/hooks/useFormError";
 import { cn } from "@/lib/utils";
-import { SignUpSchema, SignUpType } from "@/schemas/SignUpSchema";
+import { SignUpSchema, SignUpType } from "@/schemas/signup.schema";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useRef } from "react";

@@ -1,9 +1,8 @@
 "use server";
 
 import db from "@/lib/db";
-import { SignUpSchema } from "@/schemas/SignUpSchema";
+import { SignUpSchema } from "@/schemas/signup.schema";
 import { hash } from "bcrypt";
-import { NextResponse } from "next/server";
 
 export async function createUser(_state: unknown, body: unknown) {
   try {
