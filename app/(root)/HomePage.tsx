@@ -1,3 +1,4 @@
+import { getUserById } from "@/actions/user.actions";
 import { getSession } from "@/services/getSession";
 import { redirect } from "next/navigation";
 

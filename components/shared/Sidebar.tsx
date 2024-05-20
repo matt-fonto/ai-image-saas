@@ -1,6 +1,6 @@
 "use client";
 import { navLinks } from "@/constants";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/cn";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";

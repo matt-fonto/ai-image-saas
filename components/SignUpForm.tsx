@@ -2,8 +2,8 @@
 
 import { createUser } from "@/actions/user.actions";
 import { useFormErrors } from "@/hooks/useFormError";
-import { cn } from "@/lib/utils";
-import { SignUpSchema, SignUpType } from "@/schemas/signup.schema";
+import { CreateUserSchema, CreateUserType } from "@/lib/schemas/user.schema";
+import { cn } from "@/lib/utils/cn";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useRef } from "react";
@@ -25,14 +25,14 @@ export function SignUpForm({ className }: ContactFormProps) {
   const ref = useRef<HTMLFormElement>(null);
 
   function clientAction(formData: FormData) {
-    const newUser: SignUpType = {
+    const newUser: CreateUserType = {
       username: String(formData.get("username")),
       email: String(formData.get("email")),
       password: String(formData.get("password")),
       confirmPassword: String(formData.get("confirmPassword")),
     };
 
-    const { error, data } = SignUpSchema.safeParse(newUser);
+    const { error, data } = CreateUserSchema.safeParse(newUser);
 
     if (error) {
       error.issues.forEach((issue) => setFieldError(issue));

@@ -6,8 +6,8 @@ import { FormEvent, useRef } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { LoginSchema } from "@/schemas/LoginSchema";
-import { cn } from "@/lib/utils";
+import { LoginSchema } from "@/lib/schemas/login.schema";
+import { cn } from "@/lib/utils/cn";
 
 type ContactFormProps = {
   className?: string;
