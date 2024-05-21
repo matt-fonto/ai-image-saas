@@ -17,8 +17,6 @@ export const UserSchema = z.object({
   transactions: z.array(z.number()).optional(),
 });
 
-export type UserType = z.infer<typeof UserSchema>;
-
 export const CreateUserSchema = z
   .object({
     username: z.string().min(1, "Username is required").max(100),

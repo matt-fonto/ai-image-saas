@@ -9,27 +9,21 @@ import {
 import { handleError } from "@/lib/utils/handleError";
 import { hash } from "bcrypt";
 
-export async function getUserById(_state: unknown, id: number) {
+export async function getUserById(id: string) {
   try {
     const user = await db.user.findUnique({
       where: {
-        id,
+        id: parseInt(id),
       },
     });
 
     if (!user) {
-      return {
-        user: null,
-        error: "User not found",
-      };
+      throw new Error("User not found");
     }
 
     const { password: _, ...userData } = user;
 
-    return {
-      user: userData,
-      error: null,
-    };
+    return userData;
   } catch (error) {
     handleError(error);
   }
