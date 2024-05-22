@@ -27,7 +27,7 @@ export default async function AddTransformationPage({
   } = transformationTypes[type as keyof typeof transformationTypes];
 
   return (
-    <main>
+    <main className="flex flex-col gap-y-8">
       <Header title={title} subtitle={subtitle} />
       <TransformationForm
         action="add"
