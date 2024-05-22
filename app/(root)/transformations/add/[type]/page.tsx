@@ -29,8 +29,6 @@ export default async function AddTransformationPage({
   return (
     <main>
       <Header title={title} subtitle={subtitle} />
-      <pre>{JSON.stringify(user, null, 2)}</pre>
-
       <TransformationForm
         action="add"
         userId={String(user.id)}

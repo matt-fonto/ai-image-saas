@@ -169,7 +169,7 @@ export const transformationTypes = {
   },
 };
 
-export const aspectRatioOptions = {
+export const aspectRatioOptions: AspectRatioKey = {
   "1:1": {
     aspectRatio: "1:1",
     label: "Square (1:1)",

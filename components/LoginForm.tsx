@@ -27,7 +27,6 @@ export function LoginForm({ className }: ContactFormProps) {
     if (ref.current) {
       const formData = new FormData(ref.current);
       const login = formData.get("login");
-      console.log("login", login);
 
       const password = formData.get("password");
 

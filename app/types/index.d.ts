@@ -146,3 +146,12 @@ declare type User = {
   photo: string | null;
   creditBalance: number | null;
 };
+
+declare type AspectRatioKey = {
+  [key: string]: {
+    aspectRatio: string;
+    label: string;
+    width: number;
+    height: number;
+  };
+};
