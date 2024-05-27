@@ -1,6 +1,6 @@
 "use client";
 
-import { set, z } from "zod";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,7 @@ import {
 import { useState, useTransition } from "react";
 import { debounce } from "@/lib/utils/debounce";
 import { deepMergeObjects } from "@/lib/utils/deepMergeObjects";
+import { MediaUploader } from "./MediaUploader";
 
 export const formSchema = z.object({
   title: z.string(),
@@ -207,6 +208,24 @@ export function TransformationForm({
             )}
           </div>
         )}
+
+        <div className="media-uploader-field">
+          <CustomField
+            control={form.control}
+            name="publicId"
+            className="flex size-full flex-col"
+            formLabel="Upload image"
+            render={({ field }) => (
+              <MediaUploader
+                onValueChange={field.onChange}
+                setImage={setImage}
+                publicId={field.value}
+                image={image}
+                type={type}
+              />
+            )}
+          />
+        </div>
 
         <div className="flex flex-col gap-4">
           <Button
