@@ -24,6 +24,7 @@ import { debounce } from "@/lib/utils/debounce";
 import { deepMergeObjects } from "@/lib/utils/deepMergeObjects";
 import { MediaUploader } from "./MediaUploader";
 import { TransformedImage } from "./TransformedImage";
+import { updateCredits } from "@/actions/user.actions";
 
 export const formSchema = z.object({
   title: z.string(),
@@ -117,8 +118,8 @@ export function TransformationForm({
     setNewTransformation(null);
 
     startTransition(async () => {
-      //TODO: implement updateCredits
-      // await updateCredits(userId, creditFee)
+      // TODO: make value dynamic
+      await updateCredits(userId, -1);
     });
   };
 

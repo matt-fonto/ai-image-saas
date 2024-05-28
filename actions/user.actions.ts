@@ -76,6 +76,7 @@ export async function createUser(_state: unknown, body: unknown) {
         email,
         username,
         password: hashedPassword,
+        creditBalance: 50, // initial credits
       },
     });
 
@@ -168,6 +169,32 @@ export async function deleteUser(_state: unknown, id: number) {
 
     return {
       user: userData,
+      error: null,
+    };
+  } catch (error) {
+    handleError(error);
+  }
+}
+
+export async function updateCredits(userId: string, creditFee: number) {
+  try {
+    const updatedUserCredits = await db.user.update({
+      where: {
+        id: parseInt(userId),
+      },
+      data: {
+        creditBalance: {
+          increment: creditFee, // for instance -10
+        },
+      },
+    });
+
+    if (!updatedUserCredits) {
+      throw new Error("User credits update failed");
+    }
+
+    return {
+      user: updatedUserCredits,
       error: null,
     };
   } catch (error) {
