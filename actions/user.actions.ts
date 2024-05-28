@@ -176,11 +176,11 @@ export async function deleteUser(_state: unknown, id: number) {
   }
 }
 
-export async function updateCredits(userId: string, creditFee: number) {
+export async function updateCredits(userId: number, creditFee: number) {
   try {
     const updatedUserCredits = await db.user.update({
       where: {
-        id: parseInt(userId),
+        id: userId,
       },
       data: {
         creditBalance: {

@@ -26,19 +26,19 @@ declare type AddImageParams = {
     width: number;
     height: number;
     config: any;
-    secureURL: string;
+    secureUrl: string;
     transformationURL: string;
     aspectRatio: string | undefined;
     prompt: string | undefined;
     color: string | undefined;
   };
-  userId: string;
+  userId: number;
   path: string;
 };
 
 declare type UpdateImageParams = {
   image: {
-    _id: string;
+    _id: number;
     title: string;
     publicId: string;
     transformationType: string;
@@ -51,7 +51,7 @@ declare type UpdateImageParams = {
     prompt: string | undefined;
     color: string | undefined;
   };
-  userId: string;
+  userId: number;
   path: string;
 };
 
@@ -114,13 +114,13 @@ declare type RemoveUrlQueryParams = {
 };
 
 declare type SearchParamProps = {
-  params: { id: string; type: TransformationTypeKey };
+  params: { id: number; type: TransformationTypeKey };
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
 declare type TransformationFormProps = {
   action: "add" | "update";
-  userId: string;
+  userId: number;
   type: TransformationTypeKey;
   creditBalance: number;
   data?: IImage | null;
@@ -138,7 +138,7 @@ declare type TransformedImageProps = {
 };
 
 declare type User = {
-  id: string;
+  id: number;
   email: string;
   username: string;
   firstName: string;

@@ -31,7 +31,7 @@ export default async function AddTransformationPage({
       <Header title={title} subtitle={subtitle} />
       <TransformationForm
         action="add"
-        userId={String(user.id)}
+        userId={user.id}
         type={transformationType as TransformationTypeKey}
         creditBalance={user.creditBalance ?? 0}
       />
