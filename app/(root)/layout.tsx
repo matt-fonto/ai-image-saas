@@ -1,5 +1,6 @@
 import { MobileNav } from "@/components/shared/MobileNav";
 import { Sidebar } from "@/components/shared/Sidebar";
+import { Toaster } from "@/components/ui/toaster";
 import { ReactNode } from "react";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -12,7 +13,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <div className="wrapper">{children}</div>
       </div>
 
-      {/* <Toaster /> */}
+      <Toaster />
     </main>
   );
 }
