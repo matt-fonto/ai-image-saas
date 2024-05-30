@@ -3,6 +3,7 @@
 import db from "@/lib/db";
 import { handleError } from "@/lib/utils/handleError";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 // ADD IMAGE
 export async function addImage({ image, userId, path }: AddImageParams) {
@@ -31,10 +32,7 @@ export async function addImage({ image, userId, path }: AddImageParams) {
 
     revalidatePath(path);
 
-    return {
-      image: newImage,
-      error: null,
-    };
+    return JSON.parse(JSON.stringify(newImage));
   } catch (error) {
     handleError(error);
   }
@@ -63,10 +61,7 @@ export async function updateImage({ image, userId, path }: UpdateImageParams) {
 
     revalidatePath(path);
 
-    return {
-      image: updatedImage,
-      error: null,
-    };
+    return JSON.parse(JSON.stringify(updatedImage));
   } catch (error) {
     handleError(error);
   }
@@ -89,13 +84,29 @@ export async function deleteImage(id: number) {
         id,
       },
     });
+  } catch (error) {
+    handleError(error);
+  } finally {
+    redirect("/");
+  }
+}
 
-    revalidatePath(path);
+export async function getImage(id: number) {
+  try {
+    const image = db.image.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        user: true,
+      },
+    });
 
-    return {
-      image,
-      error: null,
-    };
+    if (!image) {
+      throw new Error("Image not found");
+    }
+
+    return JSON.parse(JSON.stringify(image));
   } catch (error) {
     handleError(error);
   }

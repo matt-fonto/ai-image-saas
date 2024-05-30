@@ -25,6 +25,9 @@ import { deepMergeObjects } from "@/lib/utils/deepMergeObjects";
 import { MediaUploader } from "./MediaUploader";
 import { TransformedImage } from "./TransformedImage";
 import { updateCredits } from "@/actions/user.actions";
+import { getCldImageUrl } from "next-cloudinary";
+import { addImage, updateImage } from "@/actions/image.actions";
+import { useRouter } from "next/navigation";
 
 export const formSchema = z.object({
   title: z.string(),
@@ -48,10 +51,11 @@ export function TransformationForm({
   const [image, setImage] = useState(data);
   const [newTransformation, setNewTransformation] =
     useState<Transformations | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isTransforming, setIsTransforming] = useState(false);
   const [transformationConfig, setTransformationConfig] = useState(config);
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const initialValues =
     data && action === "update"
@@ -69,8 +73,72 @@ export function TransformationForm({
     defaultValues: initialValues,
   });
 
-  function onSubmit(values: FormType) {
-    console.log(values);
+  async function onSubmit(values: FormType) {
+    setIsLoading(true);
+
+    if (!data || !image) {
+      return;
+    }
+
+    const transformationUrl = getCldImageUrl({
+      width: image?.width,
+      height: image?.height,
+      src: image?.publicId,
+      ...transformationConfig,
+    });
+
+    const imageData = {
+      title: values.title,
+      publicId: image?.publicId,
+      transformationType: type,
+      width: image?.width,
+      height: image?.height,
+      config: transformationConfig,
+      secureUrl: image.secureUrl,
+      transformationUrl,
+      aspectRatio: values.aspectRatio,
+      prompt: values.prompt,
+      color: values.color,
+    };
+
+    if (action === "add") {
+      try {
+        const newImage = await addImage({
+          image: imageData,
+          userId,
+          path: "/",
+        });
+
+        if (newImage) {
+          form.reset();
+          setImage(data);
+          router.push(`/transformations/${newImage._id}`);
+        }
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+
+    if (action === "update") {
+      try {
+        const updatedImage = await updateImage({
+          image: {
+            ...imageData,
+            _id: data._id,
+          },
+          userId,
+          path: `/transformations/${data._id}`,
+        });
+
+        if (updatedImage) {
+          router.push(`/transformations/${updatedImage._id}`);
+        }
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+
+    setIsLoading(false);
   }
 
   const onSelectFieldHandler = (
@@ -250,9 +318,9 @@ export function TransformationForm({
           <Button
             type="submit"
             className="submit-button capitalize"
-            disabled={loading}
+            disabled={isLoading}
           >
-            {loading ? "Saving..." : "Save image"}
+            {isLoading ? "Saving..." : "Save image"}
           </Button>
         </div>
       </form>
