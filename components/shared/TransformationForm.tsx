@@ -76,68 +76,68 @@ export function TransformationForm({
   async function onSubmit(values: FormType) {
     setIsLoading(true);
 
-    if (!data || !image) {
-      return;
-    }
+    console.log("data", data);
+    console.log("image", image);
 
-    const transformationUrl = getCldImageUrl({
-      width: image?.width,
-      height: image?.height,
-      src: image?.publicId,
-      ...transformationConfig,
-    });
-
-    const imageData = {
-      title: values.title,
-      publicId: image?.publicId,
-      transformationType: type,
-      width: image?.width,
-      height: image?.height,
-      config: transformationConfig,
-      secureUrl: image.secureUrl,
-      transformationUrl,
-      aspectRatio: values.aspectRatio,
-      prompt: values.prompt,
-      color: values.color,
-    };
-
-    if (action === "add") {
+    if (data || image) {
       try {
-        const newImage = await addImage({
-          image: imageData,
-          userId,
-          path: "/",
+        const transformationUrl = getCldImageUrl({
+          width: image?.width,
+          height: image?.height,
+          src: image?.publicId,
+          ...transformationConfig,
         });
 
-        if (newImage) {
-          form.reset();
-          setImage(data);
-          router.push(`/transformations/${newImage._id}`);
+        const imageData = {
+          title: values.title,
+          publicId: image?.publicId,
+          transformationType: type,
+          width: image?.width,
+          height: image?.height,
+          config: transformationConfig,
+          secureUrl: image?.secureUrl,
+          transformationUrl,
+          aspectRatio: values.aspectRatio,
+          prompt: values.prompt,
+          color: values.color,
+        };
+
+        if (action === "add") {
+          const newImage = await addImage({
+            image: imageData,
+            userId,
+            path: "/",
+          });
+
+          if (newImage) {
+            form.reset();
+            setImage(data);
+            router.push(`/transformations/${newImage.id}`);
+          } else {
+            console.log("Error during image save");
+          }
+        }
+
+        if (action === "update") {
+          const updatedImage = await updateImage({
+            image: {
+              ...imageData,
+              id: data.id,
+            },
+            userId,
+            path: `/transformations/${data.id}`,
+          });
+
+          if (updatedImage) {
+            router.push(`/transformations/${updatedImage.id}`);
+          } else {
+            console.log("Error during image update");
+          }
         }
       } catch (error) {
-        console.log("error", error);
+        console.log("Error during image save", error);
       }
     }
-
-    if (action === "update") {
-      try {
-        const updatedImage = await updateImage({
-          image: {
-            ...imageData,
-            _id: data._id,
-          },
-          userId,
-          path: `/transformations/${data._id}`,
-        });
-
-        if (updatedImage) {
-          router.push(`/transformations/${updatedImage._id}`);
-        }
-      } catch (error) {
-        console.log("error", error);
-      }
-    }
-
     setIsLoading(false);
   }
 

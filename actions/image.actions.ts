@@ -42,7 +42,7 @@ export async function updateImage({ image, userId, path }: UpdateImageParams) {
   try {
     const imageToUpdate = await db.image.findUnique({
       where: {
-        id: image._id,
+        id: image.id,
       },
     });
 
@@ -52,7 +52,7 @@ export async function updateImage({ image, userId, path }: UpdateImageParams) {
 
     const updatedImage = await db.image.update({
       where: {
-        id: image._id,
+        id: image.id,
       },
       data: {
         ...image,
