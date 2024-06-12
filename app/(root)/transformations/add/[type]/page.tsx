@@ -1,7 +1,8 @@
 import { getUserById } from "@/actions/user.actions";
 import { Header } from "@/components/shared/Header";
+import { InsufficientCreditsModal } from "@/components/shared/InsufficientCreditsModal";
 import { TransformationForm } from "@/components/shared/TransformationForm";
-import { transformationTypes } from "@/constants";
+import { creditFee, transformationTypes } from "@/constants";
 import { getSession } from "@/services/getSession";
 import { redirect } from "next/navigation";
 
@@ -29,6 +30,13 @@ export default async function AddTransformationPage({
   return (
     <main className="flex flex-col gap-y-8">
       <Header title={title} subtitle={subtitle} />
+
+      {user &&
+        user.creditBalance !== null &&
+        user.creditBalance < Math.abs(creditFee) && (
+          <InsufficientCreditsModal />
+        )}
+
       <TransformationForm
         action="add"
         userId={user.id}
