@@ -78,9 +78,6 @@ export function TransformationForm({
   async function onSubmit(values: FormType) {
     setIsLoading(true);
 
-    console.log("data", data);
-    console.log("image", image);
-
     if (data || image) {
       try {
         const transformationUrl = getCldImageUrl({

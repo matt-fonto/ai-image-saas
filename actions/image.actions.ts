@@ -4,6 +4,8 @@ import db from "@/lib/db";
 import { handleError } from "@/lib/utils/handleError";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { v2 as cloudinary } from "cloudinary";
+import { ImageType } from "@/lib/schemas/image.schema";
 
 // ADD IMAGE
 export async function addImage({ image, userId, path }: AddImageParams) {
@@ -91,22 +93,84 @@ export async function deleteImage(id: number) {
   }
 }
 
-export async function getImage(id: number) {
+export async function getImageById(
+  id?: string
+): Promise<ImageType | undefined> {
   try {
-    const image = db.image.findUnique({
+    const image = await db.image.findUnique({
       where: {
-        id,
+        id: parseInt(id ?? ""),
       },
       include: {
         user: true,
       },
     });
 
+    console.log("image", image);
+
     if (!image) {
       throw new Error("Image not found");
     }
 
     return JSON.parse(JSON.stringify(image));
+  } catch (error) {
+    handleError(error);
+  }
+}
+
+export async function getAllImages({
+  limit = 9,
+  page = 1,
+  searchQuery,
+}: GetAllImagesParams) {
+  try {
+    cloudinary.config({
+      cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+      secure: true,
+    });
+
+    let expression = "folder=ai-image-generator";
+
+    if (searchQuery) {
+      expression += ` AND tags=${searchQuery}`;
+    }
+
+    const { resources } = await cloudinary.search
+      .expression(expression)
+      .execute();
+
+    const resourcesId = resources.map((resource: any) => resource.public_id);
+    let query = {};
+
+    if (searchQuery && resourcesId.length > 0) {
+      query = {
+        publicId: {
+          in: resourcesId,
+        },
+      };
+    }
+
+    const images = await db.image.findMany({
+      where: query,
+      include: {
+        user: true,
+      },
+      orderBy: {
+        updatedAt: "desc",
+      },
+      take: limit,
+    });
+
+    const totalImages = await db.image.count({
+      where: query,
+    });
+
+    return {
+      data: JSON.parse(JSON.stringify(images)),
+      totalPages: Math.ceil(totalImages / limit),
+    };
   } catch (error) {
     handleError(error);
   }

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { CldImage } from "next-cloudinary";
+
 import {
   Pagination,
   PaginationContent,
@@ -13,9 +14,10 @@ import {
 import { transformationTypes } from "@/constants";
 
 import { Button } from "../ui/button";
-import { ImageType } from "@/lib/schemas/image.schema";
-import { formUrlQuery } from "@/lib/utils/formUrlQuery";
+
 import { Search } from "./Search";
+import { formUrlQuery } from "@/lib/utils/formUrlQuery";
+import { ImageType } from "@/lib/schemas/image.schema";
 
 export const Collection = ({
   hasSearch = false,

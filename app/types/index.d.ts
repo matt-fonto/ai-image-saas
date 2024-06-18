@@ -155,3 +155,9 @@ declare type AspectRatioKey = {
     height: number;
   };
 };
+
+declare type GetAllImagesParams = {
+  limit?: number;
+  page: number;
+  searchQuery?: string;
+};

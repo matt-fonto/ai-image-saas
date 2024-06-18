@@ -1,3 +1,4 @@
+"use client";
 import { dataUrl } from "@/constants";
 import { debounce } from "@/lib/utils/debounce";
 import { getImageSize } from "@/lib/utils/getImageSize";
