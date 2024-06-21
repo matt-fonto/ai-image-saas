@@ -1,5 +1,6 @@
 import { getImageById } from "@/actions/image.actions";
 import { getUserById } from "@/actions/user.actions";
+import { DeleteConfirmation } from "@/components/DeleteConfirmation";
 import { Header } from "@/components/shared/Header";
 import { TransformedImage } from "@/components/shared/TransformedImage";
 import { Button } from "@/components/ui/button";
@@ -101,7 +102,7 @@ export default async function TransformationPage({
               </Link>
             </Button>
 
-            {/* <DeleteConfirmation imageId={image._id} /> */}
+            {image.id && <DeleteConfirmation imageId={image.id} />}
           </div>
         )}
       </section>

@@ -184,7 +184,7 @@ export async function updateCredits(userId: number, creditFee: number) {
       },
       data: {
         creditBalance: {
-          increment: creditFee, // for instance -10
+          increment: creditFee,
         },
       },
     });

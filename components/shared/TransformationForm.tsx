@@ -171,9 +171,9 @@ export function TransformationForm({
           [fieldName === "prompt" ? "prompt" : "to"]: value,
         },
       }));
+    }, 1 * 1000)();
 
-      return onChange(value);
-    }, 1 * 1000);
+    return onChange(value);
   };
 
   const onTransformHandler = async () => {
