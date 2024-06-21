@@ -148,6 +148,7 @@ export function TransformationForm({
 
     setImage((prevState: Transformations) => ({
       ...prevState,
+      aspectRatio: imageSize.aspectRatio,
       width: imageSize.width,
       height: imageSize.height,
     }));
@@ -218,6 +219,7 @@ export function TransformationForm({
                   onValueChange={(value) =>
                     onSelectFieldHandler(value, field.onChange)
                   }
+                  value={field.value}
                 >
                   <SelectTrigger className="select-field">
                     <SelectValue placeholder="Select size" />

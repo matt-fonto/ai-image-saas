@@ -20,7 +20,7 @@ export default async function TransformationPage({
 }: TransformationParams) {
   const session = await getSession();
   const user = await getUserById(session?.user.id ?? "");
-  const image = await getImageById(id);
+  const image = await getImageById(parseInt(id));
 
   if (!image) {
     notFound();
@@ -93,7 +93,7 @@ export default async function TransformationPage({
           />
         </div>
 
-        {user?.id === image.authorId && (
+        {user?.id === image.userId && (
           <div className="mt-4 space-y-4">
             <Button asChild type="button" className="submit-button capitalize">
               <Link href={`/transformations/${image.id}/update`}>

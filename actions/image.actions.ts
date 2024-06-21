@@ -94,12 +94,12 @@ export async function deleteImage(id: number) {
 }
 
 export async function getImageById(
-  id?: string
+  id?: number
 ): Promise<ImageType | undefined> {
   try {
     const image = await db.image.findUnique({
       where: {
-        id: parseInt(id ?? ""),
+        id,
       },
       include: {
         user: true,

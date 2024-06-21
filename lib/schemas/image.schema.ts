@@ -13,7 +13,18 @@ const ImageSchema = z.object({
   aspectRatio: z.string().optional(),
   color: z.string().optional(),
   prompt: z.string().optional(),
-  authorId: z.number(),
+  userId: z.number().optional(),
+  user: z
+    .object({
+      id: z.number(),
+      email: z.string(),
+      username: z.string(),
+      firstName: z.string().optional(),
+      lastName: z.string().optional(),
+      planId: z.number().optional(),
+      creditBalance: z.number().optional(),
+    })
+    .optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
 });

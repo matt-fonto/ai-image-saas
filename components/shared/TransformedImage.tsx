@@ -1,8 +1,9 @@
 "use client";
 import { dataUrl } from "@/constants";
 import { debounce } from "@/lib/utils/debounce";
+import { download } from "@/lib/utils/download";
 import { getImageSize } from "@/lib/utils/getImageSize";
-import { CldImage } from "next-cloudinary";
+import { CldImage, getCldImageUrl } from "next-cloudinary";
 import { PlaceholderValue } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 
@@ -22,9 +23,24 @@ export function TransformedImage({
   setIsTransforming,
   transformationConfig,
   hasDownload = false,
+  title,
   isTransforming,
 }: TransformedImageProps) {
-  const downloadHandler = () => {};
+  const downloadHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+
+    download(
+      getCldImageUrl({
+        width: image?.width,
+        height: image?.height,
+        src: image?.publicId,
+        ...transformationConfig,
+      }),
+      title
+    );
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -58,7 +74,7 @@ export function TransformedImage({
               () =>
                 debounce(() => {
                   setIsTransforming?.(false);
-                }, 8000) //if nothing happens after 8 seconds, something went wrong
+                }, 8000)() //if nothing happens after 8 seconds, something went wrong
             }
             {...transformationConfig}
           />
@@ -71,6 +87,7 @@ export function TransformedImage({
                 width={50}
                 alt="loading"
               />
+              <p className="text-white/80">Please wait...</p>
             </div>
           )}
         </div>
