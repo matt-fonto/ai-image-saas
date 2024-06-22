@@ -37,13 +37,14 @@ export async function buyCredits(transaction: CheckoutTransactionParams) {
   redirect(session.url ?? "");
 }
 
+// this will be called by the webhook => after the payment is successful
 export async function createTransaction(transaction: CreateTransactionParams) {
   try {
     // create in the database
     const newTransaction = await db.transaction.create({
       data: {
         ...transaction,
-        buyer: transaction.buyer,
+        buyerId: transaction.buyerId,
       },
     });
 
