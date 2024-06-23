@@ -175,3 +175,44 @@ export async function getAllImages({
     handleError(error);
   }
 }
+
+export async function getUserImages({
+  limit = 9,
+  page = 1,
+  userId,
+}: {
+  limit?: number;
+  page: number;
+  userId: number;
+}) {
+  try {
+    const skipAmount = (Number(page) - 1) * limit;
+
+    const images = await db.image.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        user: true,
+      },
+      orderBy: {
+        updatedAt: "desc",
+      },
+      skip: skipAmount,
+      take: limit,
+    });
+
+    const totalImages = await db.image.count({
+      where: {
+        userId,
+      },
+    });
+
+    return {
+      data: JSON.parse(JSON.stringify(images)),
+      totalPages: Math.ceil(totalImages / limit),
+    };
+  } catch (error) {
+    handleError(error);
+  }
+}

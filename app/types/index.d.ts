@@ -76,7 +76,7 @@ declare type CheckoutTransactionParams = {
   plan: string;
   credits: number;
   amount: number;
-  buyerId: string;
+  buyerId: number;
 };
 
 declare type CreateTransactionParams = {
